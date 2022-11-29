@@ -7,9 +7,9 @@ import scipy
 import torch
 import torchvision.transforms.functional as F
 from PIL import Image
-from scipy.misc import imread
+from skimage.io import imread
 from skimage.color import rgb2gray, gray2rgb
-
+from skimage.transform import resize
 from torch.utils.data import DataLoader
 
 
@@ -97,7 +97,7 @@ class Dataset(torch.utils.data.Dataset):
         return mask
 
     def to_tensor(self, img):
-        img = Image.fromarray(img)
+        img = Image.fromarray((img * 255).astype(np.uint8))
         img_t = F.to_tensor(img).float()
         return img_t
 
@@ -111,7 +111,7 @@ class Dataset(torch.utils.data.Dataset):
             i = (imgw - side) // 2
             img = img[j:j + side, i:i + side, ...]
 
-        img = scipy.misc.imresize(img, [height, width])
+        img = resize(img, [height, width])
 
         return img
 
