@@ -17,9 +17,9 @@ D2G_LR: 0.1                   # discriminator/generator learning rate ratio
 BETA1: 0.0                    # adam optimizer beta1
 BETA2: 0.9                    # adam optimizer beta2
 
-INPUT_SIZE: 256               # input image size for training 0 for original size
+INPUT_SIZE: 32               # input image size for training 0 for original size
 MAX_ITERS: 3.5e5                # maximum number of iterations to train the model
-
+EPOCH: 15                  ### ADD to have epoch value
 L1_LOSS_WEIGHT: 1             # l1 loss weight
 FM_LOSS_WEIGHT: 10            # feature-matching loss weight
 STYLE_LOSS_WEIGHT: 250        # style loss weight
@@ -54,4 +54,4 @@ EVAL_SAMPLE_SAVE: ./result/eval_sample
 TEST_SAMPLE_SAVE: ./result/test_20
 
 
-MODEL_LOAD: celebA_InpaintingModel
+MODEL_LOAD: own_model  ## based own model without *dis.pth or *gen.pth
