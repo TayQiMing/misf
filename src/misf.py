@@ -68,6 +68,7 @@ class MISF():
         epoch = 0
         keep_training = True
         max_iteration = int(float((self.config.MAX_ITERS)))
+        max_epoch = int(float((self.config.EPOCH)))
         total = len(self.train_dataset)
 
         if total == 0:
@@ -91,9 +92,6 @@ class MISF():
                 self.inpaint_model.backward(gen_loss, dis_loss)
                 iteration = self.inpaint_model.iteration
 
-                if iteration >= max_iteration:
-                    keep_training = False
-                    break
 
                 logs = [
                     ("epoch", epoch),
@@ -113,11 +111,11 @@ class MISF():
 
 
                 # save model at checkpoints
-                if iteration % self.config.SAVE_INTERVAL == 0:
+                if iteration % self.config.SAVE_INTERVAL == 0 or epoch >= max_epoch:
                     self.save()
 
                 # evaluate model at checkpoints
-                if iteration % self.config.EVAL_INTERVAL == 0:
+                if iteration % self.config.EVAL_INTERVAL == 0 or epoch >= max_epoch:
                     print('\nstart eval...\n')
                     cur_psnr = self.eval()
                     self.inpaint_model.iteration = iteration
@@ -128,6 +126,10 @@ class MISF():
                         print('---increase-iteration:{}'.format(iteration))
 
                 print(logs)
+                
+                if epoch >= max_epoch:
+                    keep_training = False
+                    break
 
         print('\nEnd training....')
 
